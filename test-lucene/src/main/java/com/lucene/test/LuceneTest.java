@@ -21,6 +21,9 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.SortField.Type;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -155,8 +158,11 @@ public class LuceneTest
 			Query query = mqp.parse(keyword);
 			System.out.println("query >> " + query);
 
+			/** defining the sorting on filed "name" */
+			Sort nameSort = new Sort(new SortField("name", Type.STRING));
+
 			/** run the query */
-			TopDocs hits = searcher.search(query, 100);
+			TopDocs hits = searcher.search(query, 100, nameSort);
 			System.out.println("Results found >> " + hits.totalHits);
 
 			Document doc = null;
